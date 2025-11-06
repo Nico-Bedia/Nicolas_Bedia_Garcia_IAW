@@ -1,0 +1,84 @@
+<?php
+// Definición de tasas de cambio reales (ejemplo)
+// El valor mostrado es el tipo de cambio frente al dólar.
+$monedas = [
+    "libras" => 1.31,
+    "euros" => 1.09,
+    "yen" => 0.006
+];
+
+// Persistencia de datos enviados por el formulario
+$cantidad = $_POST['cantidad'] ?? '';
+$origen   = $_POST['origen'] ?? 'libras';
+$destino  = $_POST['destino'] ?? 'euros';
+
+$resultado = '';
+$error = '';
+
+// Validación básica de entrada
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!is_numeric($cantidad) || $cantidad <= 0) {
+        $error = "Por favor, introduce una cantidad válida mayor que cero.";
+    } elseif (!isset($monedas[$origen]) || !isset($monedas[$destino])) {
+        $error = "Selecciona monedas válidas.";
+    } else {
+        // Conversión correcta según tipo de cambio
+        $cantidad_en_dolares = $cantidad * $monedas[$origen];
+        $resultado = $cantidad_en_dolares / $monedas[$destino];
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Conversor de monedas PHP</title>
+</head>
+<body>
+    <h1>Conversor de monedas</h1>
+    <?php if ($error): ?>
+        <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
+    <?php endif; ?>
+
+    <form method="post" action="">
+        <label for="cantidad">Cantidad:</label>
+        <input type="text" name="cantidad" id="cantidad" value="<?php echo htmlspecialchars($cantidad); ?>">
+
+        <br><br>
+
+        <label for="origen">Moneda origen:</label>
+        <select name="origen" id="origen">
+            <?php foreach ($monedas as $codigo => $valor): ?>
+                <option value="<?php echo htmlspecialchars($codigo); ?>" <?php if($codigo == $origen) echo "selected"; ?>>
+                    <?php echo ucfirst($codigo); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
+        <br><br>
+
+        <label for="destino">Moneda destino:</label>
+        <select name="destino" id="destino">
+            <?php foreach ($monedas as $codigo => $valor): ?>
+                <option value="<?php echo htmlspecialchars($codigo); ?>" <?php if($codigo == $destino) echo "selected"; ?>>
+                    <?php echo ucfirst($codigo); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <br><br>
+        <button type="submit">Convertir</button>
+    </form>
+
+    <?php if ($resultado !== '' && !$error && $_SERVER["REQUEST_METHOD"] == "POST"): ?>
+        <h2>Resultado</h2>
+        <p>
+            <?php echo htmlspecialchars($cantidad); ?>
+            <?php echo htmlspecialchars(ucfirst($origen)); ?>
+            =
+            <?php echo round($resultado, 2); ?>
+            <?php echo htmlspecialchars(ucfirst($destino)); ?>
+        </p>
+    <?php endif; ?>
+    <hr>
+</body>
+</html>
