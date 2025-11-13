@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Expo Motos Premium 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav>
+    <div class="logo">EXPO MOTOS PREMIUM</div>
+    <ul class="menu">
+      <li><a href="#inicio">Inicio</a></li>
+      <li class="submenu-parent">
+        <a href="#multimedia">Multimedia ▼</a>
+        <ul class="submenu">
+          <li><a href="#galeria">Galería de Imágenes</a></li>
+          <li><a href="#videos">Videos</a></li>
+        </ul>
+      </li>
+      <li><a href="#eventos">Próximos Eventos</a></li>
+      <li><a href="#testimonios">Testimonios</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <header id="inicio" class="hero">
+    <video autoplay muted loop playsinline class="hero-video" poster="image.jpg">
+      <source src="VID_20251111_145030_452.mp4" type="video/mp4" />
+      Tu navegador no soporta el video.
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Bienvenido a Expo Motos Premium 2025</h1>
+      <p>
+        Explora lo último en motos y tecnología. Disfruta del sitio con fotos y videos espectaculares.
+      </p>
+      <a class="btn-primary" href="#galeria">Ir a Galería de Imágenes</a>
+    </div>
+  </header>
+
+  <section id="galeria" class="section">
+    <h2>Galería de Imágenes</h2>
+    <div class="gallery">
+      <img src="image.jpg" alt="Moto Honda – Idemitsu" />
+      <img src="Screenshot_20251111_235101_Instagram.jpg" alt="Motomorini Expo" />
+      <img src="Screenshot_20251111_235207_Instagram.jpg" alt="Arrow Exhaust Ducati" />
+      <img src="Screenshot_20251111_111234_TikTok.jpg" alt="Arrow Ducati" />
+      <img src="Screenshot_20251111_111243_TikTok.jpg" alt="Arrow Exhaust Expo" />
+      <img src="Screenshot_20251111_111251_TikTok.jpg" alt="Expo Ducati" />
+    </div>
+  </section>
+
+  <section id="videos" class="section section-alt">
+    <h2>Videos Destacados</h2>
+    <div class="videos">
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="image.jpg"
+        src="a17866d8c6ad755cdefb189d36f55865.mp4"
+      ></video>
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="Screenshot_20251111_235101_Instagram.jpg"
+        src="f22d7bf80eb16e513a66fad6a0b150cc.mp4"
+      ></video>
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="Screenshot_20251111_235207_Instagram.jpg"
+        src="592605f3613f50fb4059a10814ccf8d7.mp4"
+      ></video>
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="Screenshot_20251111_111251_TikTok.jpg"
+        src="VID_20251111_145030_452.mp4"
+      ></video>
+    </div>
+  </section>
+
+  <section id="eventos" class="section">
+    <h2>Próximos Eventos</h2>
+    <div class="event-cards">
+      <article class="event-card">
+        <h3>Expo Moto Tech 2025</h3>
+        <p><strong>Fecha:</strong> 5 diciembre 2025</p>
+        <p><strong>Lugar:</strong> Madrid IFEMA</p>
+        <p>El principal evento para descubrir avances y motos innovadoras.</p>
+      </article>
+      <article class="event-card">
+        <h3>Arrow Racing Week</h3>
+        <p><strong>Fecha:</strong> 19 enero 2026</p>
+        <p><strong>Lugar:</strong> Circuito de Jerez</p>
+        <p>Competición exclusiva con exhibiciones de Ducati y Arrow.</p>
+      </article>
+      <article class="event-card">
+        <h3>Comunidad Motos y Tecnología</h3>
+        <p><strong>Fecha:</strong> 10 abril 2026</p>
+        <p><strong>Lugar:</strong> Barcelona Fira</p>
+        <p>Encuentro para networking, lanzamientos y test drives.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="testimonios" class="section section-alt">
+    <h2>Testimonios</h2>
+    <div class="testimonials">
+      <blockquote>
+        “La calidad visual y la experiencia en la galería superó mis expectativas.”
+        <footer>— Visitante Expo</footer>
+      </blockquote>
+      <blockquote>
+        “El sitio es muy fácil de navegar y las fotos y videos se cargan rápidamente.”
+        <footer>— Expositor Arrow</footer>
+      </blockquote>
+      <blockquote>
+        “Diseño profesional, ideal para compartir con clientes y colaboradores.”
+        <footer>— Organizador Ducati</footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <section id="contacto" class="section">
+    <h2>Contáctanos</h2>
+    <form class="contact-form" action="#" method="post">
+      <input type="text" placeholder="Tu Nombre" required />
+      <input type="email" placeholder="Correo electrónico" required />
+      <textarea placeholder="Mensaje" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2025 Expo Motos Premium | Diseño elegante y moderno</p>
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      src="a17866d8c6ad755cdefb189d36f55865.mp4"
+      poster="image.jpg"
+      class="footer-video"
+    ></video>
+  </footer>
+
+  <script>
+    // Menú desplegable toggle for touch and click devices
+    document.querySelectorAll('.submenu-parent > a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const submenu = link.nextElementSibling;
+        submenu.classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+/* Menú */
+nav ul.menu {
+  list-style: none;
+  display: flex;
+  gap: 2.4rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+nav ul.menu > li {
+  position: relative;
+}
+nav ul.menu li a {
+  color: #ffd700;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: 0.2s;
+  cursor: pointer;
+}
+nav ul.menu li a:hover,
+nav ul.menu li a:focus {
+  color: #fff;
+}
+
+/* Submenus */
+.submenu {
+  position: absolute;
+  left: 0;
+  top: 120%;
+  background: #222;
+  padding: 0.5rem 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px #ffd70080;
+  display: none;
+  min-width: 170px;
+  z-index: 100;
+  flex-direction: column;
+}
+.submenu.open {
+  display: flex;
+}
+.submenu li {
+  padding: 10px 20px;
+}
+.submenu li a {
+  color: #ffd700;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.submenu li a:hover,
+.submenu li a:focus {
+  color: #fff;
+}
+
+/* Hover abrir submenu para desktop */
+nav ul.menu > li:hover .submenu {
+  display: flex;
+}
+
+/* Opcional: Icono en menú padre para indicar submenu */
+.submenu-parent > a::after {
+  content: " ▼";
+  font-size: 0.7rem;
+}
+
+/* Ajustes para dispositivos táctiles */
+@media (max-width: 900px) {
+  nav ul.menu {
+    flex-direction: column;
+    gap: 10px;
+    background: #232323;
+    padding: 10px;
+  }
+  nav ul.menu > li > .submenu {
+    position: static;
+    display: none;
+    box-shadow: none;
+    background: transparent;
+  }
+  nav ul.menu > li > .submenu.open {
+    display: flex;
+  }
+}

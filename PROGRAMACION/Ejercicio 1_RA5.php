@@ -1,26 +1,28 @@
 <?php
-session_start(); // Inicia la sesión de la persona para hacer el contado de sesiones
-// Zona horaria Nuesta (madrid)
+session_start(); // Inicia la sesión para el contador por sesión
+// Zona horaria recomendada
+// Puedes cambiar 'Europe/Madrid' a tu preferida
 date_default_timezone_set('Europe/Madrid');
 
-// Autenticación 
+// --------- BLOQUE EXTRA PARA EL ENUNCIADO --------- //
+// Autenticación simulada (solo en este ejemplo)
 if (!isset($_SESSION['autenticado'])) {
-    // Autenticar por defecto//
+    // Autenticado por defecto, simulado
     $_SESSION['autenticado'] = true;
 }
 if (!$_SESSION['autenticado']) {
-    echo "Acceso no autorizado. Inicia sesión para continuar.";
-    exit;
+    die("Acceso no autorizado. Inicia sesión para continuar.");
 }
 
-
-// Si solicitan borrar visitas//
+// Si solicitan borrar visitas:
 if (isset($_POST['borrar_visitas'])) {
     unset($_SESSION['instantes_visita']);
     $visitas_borradas = true;
+}
+// --------- FIN BLOQUE EXTRA --------- //
 
 
-// Mensaje de la anterior visita //
+/* --- Mensaje de anterior visita (cookie) --- */
 $ahora = date('d/m/Y H:i');
 if (isset($_COOKIE['ultima_visita'])) {
     $mensaje_cookie = "Bienvenido de nuevo! Tu última visita fue el " . $_COOKIE['ultima_visita'] . ".";
@@ -29,13 +31,11 @@ if (isset($_COOKIE['ultima_visita'])) {
 }
 
 
-
 // Actualiza la cookie a la fecha de la visita actual
 setcookie('ultima_visita', $ahora, time() + 60*60*24*365); // 1 año
 
 
-
-// Contador de visitas con sesión 
+/* --- Contador de visitas con sesión --- */
 if (!isset($_SESSION['visitas'])) {
     $_SESSION['visitas'] = 1;
 } else {
@@ -43,55 +43,41 @@ if (!isset($_SESSION['visitas'])) {
 }
 
 
-
-// Registro de instantes de visita por sesión //
+/* --- Registro de instantes de visita por sesión --- */
 if (!isset($_SESSION['instantes_visita'])) {
-    $_SESSION['instantes_visita'] = array();
+    $_SESSION['instantes_visita'] = [];
 }
-
+// Evita registrar cuando acaban de borrar, solo en POST que no sea borrar
 if (!isset($visitas_borradas)) {
-    $_SESSION['instantes_visita'][] = $ahora;
+    array_push($_SESSION['instantes_visita'], $ahora);
 }
 $numero_visitas = count($_SESSION['instantes_visita']);
 
-
-// Mensaje según si es la primera visita //
+// --- Mensaje según si es la primera visita ---
 if ($numero_visitas <= 1) {
-    $mensaje_sesion = "Bienvenido a mi pagina de conversion de monedas Esta es tu primera visita en la sesión.";
+    $mensaje_sesion = "Bienvenido! Esta es tu primera visita en la sesión.";
 } else {
-    
-    $instantes_texto = "";
-    foreach ($_SESSION['instantes_visita'] as $indice => $instante) {
-        if ($indice > 0) {
-            $instantes_texto .= ", ";
-        }
-        $instantes_texto .= $instante;
-    }
-    
     $mensaje_sesion = "Has visitado la página " . 
         $numero_visitas . 
         " veces durante esta sesión, en los instantes: " . 
-        $instantes_texto . ".";
+        implode(", ", $_SESSION['instantes_visita']) . ".";
 }
 
 
-
-// Conversor de monedas //
-$monedas = array(
+/* --- Conversor de monedas --- */
+$monedas = [
     "libras" => 1.31,
     "euros"  => 1.09,
     "dolares" => 1
-);
+];
 $cantidad = isset($_POST['cantidad']) ? $_POST['cantidad'] : '';
 $origen   = isset($_POST['origen']) ? $_POST['origen'] : 'libras';
 $destino  = isset($_POST['destino']) ? $_POST['destino'] : 'dolares';
 
 
-
 $resultado = '';
 $error = '';
 $mostrar_resultado = false;
-
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['borrar_visitas'])) {
@@ -100,8 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['borrar_visitas'])) {
     } elseif (!isset($monedas[$origen]) || !isset($monedas[$destino])) {
         $error = "Selecciona monedas válidas.";
     } else {
-        // Cálculo y redondeo de la moneda  // 
-        $resultado = round($cantidad * $monedas[$origen] / $monedas[$destino], 2);
+        $resultado = number_format($cantidad * $monedas[$origen] / $monedas[$destino], 2);
         $mostrar_resultado = true;
     }
 }
@@ -134,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['borrar_visitas'])) {
             align-items: center;
         }
         .visitas-msg::before {
-            content: '\1F4C5'; 
+            content: '\1F4C5'; /* emoji calendario */
             margin-right: 7px;
             font-size: 1.2em;
             opacity: .75;
@@ -154,26 +139,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['borrar_visitas'])) {
 </head>
 <body>
     <div class="container">
-        <!-- Mensaje de anterior visita (cookie de primer acceso) -->
+        <!-- Mensaje de anterior visita (cookie) -->
         <div class="visitas-msg">
             <?php echo $mensaje_cookie; ?>
         </div>
-        <!-- Mensaje de visitas por sesión repetido -->
+        <!-- Mensaje de visitas por sesión con instantes -->
         <div class="sesion-msg">
             <?php echo $mensaje_sesion; ?>
         </div>
-        <!-- Boton para borrar registro de  las visitas -->
+        <!-- Botón para borrar registro de visitas -->
         <form method="post" style="margin-bottom:15px;">
             <button type="submit" name="borrar_visitas" class="boton" style="background:#d32f2f;">Borrar visitas</button>
         </form>
 
-
         <?php if ($mostrar_resultado): ?>
             <div class="barra-azul">
-                <?php echo $cantidad . " " . $origen . " son " . $resultado . " " . $destino; ?>
+                <?php echo "{$cantidad} {$origen} son {$resultado} {$destino}"; ?>
             </div>
         <?php endif; ?>
 
+        <h2>Conversor de monedas</h2>
+        <?php if ($error): ?>
+            <div class="error"><?php echo $error; ?></div>
+        <?php endif; ?>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="cantidad">Cantidad:</label>
+                <input type="text" name="cantidad" id="cantidad" value="<?php echo htmlspecialchars($cantidad); ?>">
+            </div>
+            <div class="form-group">
+                <label for="origen">Origen:</label>
+                <select name="origen" id="origen">
+                    <?php foreach ($monedas as $codigo => $valor): ?>
+                        <option value="<?php echo $codigo; ?>" <?php if($codigo == $origen) echo 'selected'; ?>>
+                            <?php echo $codigo; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="destino">Destino:</label>
+                <select name="destino" id="destino">
+                    <?php foreach ($monedas as $codigo => $valor): ?>
+                        <option value="<?php echo $codigo; ?>" <?php if($codigo == $destino) echo 'selected'; ?>>
+                            <?php echo $codigo; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <button type="submit" class="boton">Convertir</button>
         </form>
